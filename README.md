@@ -15,7 +15,7 @@ a "must graduate between the years 2027-2028", etc....
 
 ## how does internsearch work ?
 - pulls from different job search engines w/ python
-- store listings in postgresql
+- store listings in PostgreSQL
 - filter through listings
 - return eligible listings
 
