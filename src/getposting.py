@@ -42,7 +42,18 @@ if response.status_code == 200: #200 <-> succeeded
     data = make_request(data['nextCursor'])
 
     page = 1
-    while (data.json()['nextCursor'] != None):
+
+    while True:
+        if data.status_code != 200:
+            print("request failed")
+            print("status code: ", data.status_code)
+            break #break completely out of loop
+        
+        if data.json()['nextCursor'] is None:
+            print("no more pages")
+            break
+
+        
         print(f"---------------------------PAGE {page} DONE---------------------------")
 
         #looping thru jobs on CURRENT page
