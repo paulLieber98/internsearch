@@ -23,3 +23,5 @@ a "must graduate between the years 2027-2028", etc....
 - PostgreSQL
 - 
 
+helpful:
+- https://himalayas.app/docs/remote-jobs-api
