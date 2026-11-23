@@ -10,9 +10,13 @@ load_dotenv(project_root / ".env")
 key = os.getenv("API_KEY")
 
 
-
-
 def make_request(cursor):
+    """
+    makes a request to the Himilayas API. 
+    takes in CURSOR param to flip to next page || pagination
+
+    """
+
     r = requests.get(
         "https://himalayas.app/jobs/api", #not using the "/search" api because this one w/o is unfiltered.
         params={
@@ -24,9 +28,10 @@ def make_request(cursor):
     )
     return r
 
+#make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
 response = make_request(None)
 
-
+#assumes code = 200 --> green light
 if response.status_code == 200: #200 <-> succeeded
     data = response.json() #process response object into json
 
@@ -34,33 +39,31 @@ if response.status_code == 200: #200 <-> succeeded
     for job in data['jobs']:
         print(job['title'])
 
-
-    # print("NEXT CURSOR: ", data['nextCursor']) # MjAyNi0xMS0yM1QwMzoyNTo0My41MTQ5NjdafDI1Mzg1NDM
-
-
-
+    #makes request w/ cursor arg to flip to next page/set
     data = make_request(data['nextCursor'])
 
-    page = 1
+    
+    page = 1 #to keep track visually in terminal
+    while True: 
 
-    while True:
+        #if request fails/anything else than succeeds
         if data.status_code != 200:
             print("request failed")
             print("status code: ", data.status_code)
             break #break completely out of loop
-        
-        if data.json()['nextCursor'] is None:
-            print("no more pages")
-            break
 
-        
+        #if no more next page/set
+        if data.json()['nextCursor'] is None:
+            print("no more pages") 
+            break 
+
         print(f"---------------------------PAGE {page} DONE---------------------------")
 
         #looping thru jobs on CURRENT page
         for job in data.json()['jobs']:
             print(job['title'])
-        
 
+        #next page/set
         data = make_request(data.json()['nextCursor'])
         page+=1
 
