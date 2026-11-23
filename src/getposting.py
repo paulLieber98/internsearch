@@ -11,16 +11,16 @@ key = os.getenv("API_KEY")
 
 
 
-while True:
-    response = requests.get(
-        "https://himalayas.app/jobs/api", #not using the "/search" api because this one w/o is unfiltered.
-        headers = {
-                "Authorization": f"Bearer {key}"
-            }
-        )
-    
-    if response.status_code == 200: #200 <-> succeeded
-        data = response.json() #process response object into json
-        print(f"{data['jobs'][0]['title']}\n")
-    else:
-        break
+
+response = requests.get(
+    "https://himalayas.app/jobs/api", #not using the "/search" api because this one w/o is unfiltered.
+    headers = {
+            "Authorization": f"Bearer {key}"
+        }
+    )
+
+if response.status_code == 200: #200 <-> succeeded
+    data = response.json() #process response object into json
+
+    for job in len(data['jobs']):
+        print(f"{data['jobs'][job]['title']}")
