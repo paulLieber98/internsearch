@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 from dotenv import *
 
+import time #adding delay to avoid error 429 (too many requests)
+
 #loading api key
 project_root = Path(__file__).resolve().parent.parent #cd ..
 load_dotenv(project_root / ".env")
@@ -64,6 +66,7 @@ if response.status_code == 200: #200 <-> succeeded
             print(job['title'])
 
         #next page/set
+        time.sleep(2)
         data = make_request(data.json()['nextCursor'])
         page+=1
 
