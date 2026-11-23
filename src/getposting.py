@@ -22,5 +22,6 @@ response = requests.get(
 if response.status_code == 200: #200 <-> succeeded
     data = response.json() #process response object into json
 
-    for job in len(data['jobs']):
-        print(f"{data['jobs'][job]['title']}")
+    for job in data['jobs']:
+        # print(f"{data['jobs'][job]['title']}")
+        print(job['title'])
