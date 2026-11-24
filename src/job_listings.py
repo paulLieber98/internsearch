@@ -15,24 +15,25 @@ def insert(job):
     cursor.execute(
         """
         INSERT INTO jobs (
-            guid, 
-            companyName, 
-            title, 
-            employmentType, 
-            description, 
-            locationRestrictions,
-            applicationLink
+            guid,
+            company_name,
+            title,
+            employment_type,
+            description,
+            location,
+            application_url
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (guid) DO NOTHING;
         """,
 
         (
-            job['guid'], 
-            job['companyName'], 
-            job['title'], 
-            job['employmentType'], 
-            job['description'], 
-            job['locationRestrictions'],
+            job['guid'],
+            job['companyName'],
+            job['title'],
+            job['employmentType'],
+            job['description'],
+            ", ".join(job['locationRestrictions'] or []),
             job['applicationLink']
         )
     )
