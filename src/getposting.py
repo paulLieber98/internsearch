@@ -6,6 +6,10 @@ from dotenv import *
 
 import time #adding delay to avoid error 429 (too many requests)
 
+from job_listings import insert, connection, cursor
+
+
+
 #loading api key
 project_root = Path(__file__).resolve().parent.parent #cd ..
 load_dotenv(project_root / ".env")
@@ -47,10 +51,16 @@ if response.status_code == 200: #200 <-> succeeded
     for job in data['jobs']:
         print(job['title'])
 
+        #insert current job in db
+        insert(job)
+
+    #ONCE COMPLETELY DONE WITH FULL PAGE:
+    #commit changes
+    connection.commit()
+
+
     #makes request w/ cursor arg to flip to next page/set
     data = make_request(data['nextCursor'])
-
-    
     page = 1 #to keep track visually in terminal
     while True: 
 
@@ -60,20 +70,54 @@ if response.status_code == 200: #200 <-> succeeded
             print("status code: ", data.status_code)
             break #break completely out of loop
 
-        #if no more next page/set
+        #if no more next page/set || LAST PAGE
         if data.json()['nextCursor'] is None:
+            
+           #looping thru jobs on CURRENT page
+            for job in data.json()['jobs']:
+                print(job['title'])
+        
+                #insert current job in db
+                insert(job)
+        
+            #ONCE COMPLETELY DONE WITH FULL PAGE:
+            #commit changes
+            connection.commit()
+
             print("no more pages") 
             break 
 
+
         print(f"---------------------------PAGE {page} DONE---------------------------")
+
 
         #looping thru jobs on CURRENT page
         for job in data.json()['jobs']:
             print(job['title'])
+            
+            #insert current job in db
+            insert(job)
+
+        #ONCE COMPLETELY DONE WITH FULL PAGE:
+        #commit changes
+        connection.commit()
+
 
         #next page/set
-        time.sleep(2)
-        data = make_request(data.json()['nextCursor'])
+        time.sleep(2) #sleep for 2 secs to avoid 429(too many requests)
+
+        #make new request
+        data = make_request(data.json()['nextCursor']) 
+
         page+=1
+
+
+
+
+#finally close the connection + cursor to avoid leaking data once done 
+cursor.close()
+connection.close()
+
+
 
         
