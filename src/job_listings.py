@@ -9,6 +9,14 @@ connection = psycopg2.connect(
 
 cursor = connection.cursor() #returns cursor object so that we can fetch/execute queries
 
+
+
+#inserts job info as a row in "jobs" table inside db
+def insert(guid, title, employment_type, full_job_desc, location):
+    pass
+
+
+
 #selecting all columns from jobs table
 cursor.execute("SELECT * FROM jobs;")
 
@@ -20,5 +28,5 @@ print(results)
 
 
 #close connection & cursor
-connection.close()
+# connection.close()
 cursor.close()

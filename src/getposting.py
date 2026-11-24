@@ -34,12 +34,6 @@ def make_request(cursor):
 
 
 
-#inserts job info as a row in "jobs" table inside db
-def insert(guid, title, employment_type, full_job_desc, location):
-    pass
-
-
-
 #MAIN LOGIC
 
 #make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
