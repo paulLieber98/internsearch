@@ -46,7 +46,6 @@ def save_checkpoint(next_cursor):
 
     completed = next_cursor is None
 
-
     cursor.execute(
         """
         UPDATE ingestion_state
@@ -60,4 +59,15 @@ def load_checkpoint():
     """
     loads the last saved checkpoint to continue where pagination process stopped
     """
-    pass
+    cursor.execute(
+        """
+        SELECT next_cursor, completed
+        FROM ingestion_state
+        WHERE source = 'himalayas'
+        """
+    )
+
+    last_saved_row = cursor.fetchone() #returning the last saved row with .fetchone() returning a single row
+    return last_saved_row
+
+# print(load_checkpoint())
