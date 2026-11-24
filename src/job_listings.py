@@ -12,8 +12,32 @@ cursor = connection.cursor() #returns cursor object so that we can fetch/execute
 
 
 #inserts job info as a row in "jobs" table inside db
-def insert(guid, title, employment_type, full_job_desc, location):
-    pass
+#guid, company_name, title, employment_type, full_job_desc, location, application_url
+def insert(job):
+    cursor.execute(
+        """
+        INSERT INTO jobs (
+            guid, 
+            company_name, 
+            title, 
+            employment_type, 
+            full_job_desc, 
+            location, 
+            application_url
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        """,
+
+        (
+            job['guid'], 
+            job['company_name'], 
+            job['title'], 
+            job['employment_type'], 
+            job['full_job_desc'], 
+            job['location'], 
+            job['application_url']
+        )
+    )
 
 
 
