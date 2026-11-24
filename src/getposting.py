@@ -105,7 +105,7 @@ if response.status_code == 200: #200 <-> succeeded
         #commit changes
         connection.commit()
 
-        #TEMPORARY PAGE BLOCK AT PAGE 4 SO IT DOESNT GO INFINITELY
+        #TEMPORARY PAGE BLOCK AT PAGE 4 SO IT DOESNT GO INFINITELY (in total 5 pages now bc page 4 is included)
         if page >= 4: 
             break
 
