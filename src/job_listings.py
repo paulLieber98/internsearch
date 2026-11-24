@@ -30,7 +30,7 @@ def insert(job):
             job['guid'], 
             job['companyName'], 
             job['title'], 
-            job['employment_type'], 
+            job['employmentType'], 
             job['description'], 
             job['locationRestrictions'][0], #[0] bc job['locationRestrictions'] returns a list and the location is only item inside. 
             job['applicationLink']
