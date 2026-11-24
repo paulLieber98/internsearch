@@ -9,8 +9,6 @@ connection = psycopg2.connect(
 
 cursor = connection.cursor() #returns cursor object so that we can fetch/execute queries
 
-
-
 #inserts job info as a row in "jobs" table inside db
 #guid, company_name, title, employment_type, full_job_desc, location, application_url
 def insert(job):
@@ -30,12 +28,12 @@ def insert(job):
 
         (
             job['guid'], 
-            job['company_name'], 
+            job['companyName'], 
             job['title'], 
             job['employment_type'], 
-            job['full_job_desc'], 
-            job['location'], 
-            job['application_url']
+            job['description'], 
+            job['locationRestrictions'][0], #[0] bc job['locationRestrictions'] returns a list and the location is only item inside. 
+            job['applicationLink']
         )
     )
 
