@@ -20,6 +20,7 @@ def insert(job):
             title, 
             employmentType, 
             description, 
+            locationRestrictions
             applicationLink
         )
         VALUES (%s, %s, %s, %s, %s, %s, %s);
@@ -31,6 +32,7 @@ def insert(job):
             job['title'], 
             job['employmentType'], 
             job['description'], 
+            job['locationRestrictions']
             job['applicationLink']
         )
     )
