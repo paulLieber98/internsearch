@@ -18,6 +18,7 @@ a "must graduate between the years 2027-2028", etc....
 - store listings in PostgreSQL
 - filter through listings
 - return eligible listings
+- use an ingestion state table in the DB to keep progress of going thru jobs
 
 ## tech stack
 - PostgreSQL
