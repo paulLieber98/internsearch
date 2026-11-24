@@ -39,7 +39,16 @@ def insert(job):
     )
 
 
+def save_checkpoint(next_cursor):
 
-#close connection & cursor
-# connection.close()
-# cursor.close()
+    completed = next_cursor is None
+
+
+    cursor.execute(
+        """
+        UPDATE ingestion_state
+        SET next_cursor = %s, pages_processed = pages_processed + 1, completed = %s
+        WHERE source = 'himalayas';
+        """,
+        (next_cursor, completed) #pass into %s 
+    )
