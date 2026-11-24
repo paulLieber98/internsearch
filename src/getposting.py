@@ -38,9 +38,9 @@ def make_request(cursor):
 
 
 
-#MAIN LOGIC
+#MAIN SCRAPING PROCESS
 
-#make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
+# 1st REQUEST: make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
 response = make_request(None)
 
 #assumes code = 200 --> green light
@@ -57,6 +57,9 @@ if response.status_code == 200: #200 <-> succeeded
     #ONCE COMPLETELY DONE WITH FULL PAGE:
     #commit changes
     connection.commit()
+
+    #AFTER PAGE 1:
+    time.sleep(2) #sleep for 2 secs to avoid 429(too many requests)
 
 
     #makes request w/ cursor arg to flip to next page/set
@@ -101,6 +104,10 @@ if response.status_code == 200: #200 <-> succeeded
         #ONCE COMPLETELY DONE WITH FULL PAGE:
         #commit changes
         connection.commit()
+
+        #TEMPORARY PAGE BLOCK AT PAGE 4 SO IT DOESNT GO INFINITELY
+        if page >= 4: 
+            break
 
 
         #next page/set
