@@ -37,11 +37,19 @@ def make_request(cursor):
     return r
 
 
-
 #MAIN SCRAPING PROCESS
 
+# determining if we reached the end of the entirety of jobs (~120,000)
+next_cursor, completed = load_checkpoint()
+if completed == True:
+    #dont retrieve any more pages
+    cursor.close()
+    connection.close()
+    exit()
+
+# (was "None" before new args ) - 
 # 1st REQUEST: make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
-response = make_request(None)
+response = make_request(next_cursor) 
 
 #assumes code = 200 --> green light
 if response.status_code == 200: #200 <-> succeeded
@@ -54,11 +62,21 @@ if response.status_code == 200: #200 <-> succeeded
         #insert current job in db
         insert(job)
 
+    #save the checkpoint before committing changes to the table
+    save_checkpoint(data['nextCursor'])
+
     #ONCE COMPLETELY DONE WITH FULL PAGE:
     #commit changes
     connection.commit()
 
-    #AFTER PAGE 1:
+    #if theres just one more set (current page) to go and no more after initial committing:
+    if data['nextCursor'] is None:
+        #dont retrieve any more pages
+        cursor.close()
+        connection.close()
+        exit()
+
+    #AFTER PAGE:
     time.sleep(2) #sleep for 2 secs to avoid 429(too many requests)
 
 
@@ -82,6 +100,9 @@ if response.status_code == 200: #200 <-> succeeded
         
                 #insert current job in db
                 insert(job)
+
+            #save the checkpoint before committing changes to the table
+            save_checkpoint(data.json()['nextCursor'])
         
             #ONCE COMPLETELY DONE WITH FULL PAGE:
             #commit changes
@@ -100,6 +121,9 @@ if response.status_code == 200: #200 <-> succeeded
             
             #insert current job in db
             insert(job)
+
+        #save the checkpoint before committing changes to the table
+        save_checkpoint(data.json()['nextCursor'])
 
         #ONCE COMPLETELY DONE WITH FULL PAGE:
         #commit changes

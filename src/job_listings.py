@@ -44,7 +44,7 @@ def save_checkpoint(next_cursor):
     saves checkpoint of where the pagination process stopped.
     """
 
-    completed = next_cursor is None
+    completed = next_cursor is None #boolean
 
     cursor.execute(
         """
