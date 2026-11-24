@@ -40,6 +40,9 @@ def insert(job):
 
 
 def save_checkpoint(next_cursor):
+    """
+    saves checkpoint of where the pagination process stopped.
+    """
 
     completed = next_cursor is None
 
@@ -52,3 +55,9 @@ def save_checkpoint(next_cursor):
         """,
         (next_cursor, completed) #pass into %s 
     )
+
+def load_checkpoint():
+    """
+    loads the last saved checkpoint to continue where pagination process stopped
+    """
+    pass
