@@ -6,7 +6,7 @@ from dotenv import *
 
 import time #adding delay to avoid error 429 (too many requests)
 
-from job_listings import insert, connection, cursor
+from job_listings import insert, connection, cursor, save_checkpoint, load_checkpoint
 
 
 
