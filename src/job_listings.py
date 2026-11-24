@@ -40,16 +40,6 @@ def insert(job):
 
 
 
-#selecting all columns from jobs table
-cursor.execute("SELECT * FROM jobs;")
-
-#fetching the columns that w/ the query we sent
-results = cursor.fetchall()
-
-print(results)
-
-
-
 #close connection & cursor
 # connection.close()
-cursor.close()
+# cursor.close()
