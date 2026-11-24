@@ -12,6 +12,8 @@ load_dotenv(project_root / ".env")
 key = os.getenv("API_KEY")
 
 
+
+#makes request to api everytime called
 def make_request(cursor):
     """
     makes a request to the Himilayas API. 
@@ -29,6 +31,16 @@ def make_request(cursor):
         }
     )
     return r
+
+
+
+#inserts job info as a row in "jobs" table inside db
+def insert(guid, title, employment_type, full_job_desc, location):
+    pass
+
+
+
+#MAIN LOGIC
 
 #make initial request WITHOUT CURSOR ARGUMENT BC PAGE 0
 response = make_request(None)
